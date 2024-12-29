@@ -14,43 +14,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ecommerce.ecommerce.entities.User;
-import com.ecommerce.ecommerce.services.UserService;
+import com.ecommerce.ecommerce.entities.Category;
+import com.ecommerce.ecommerce.services.CategoryService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/categories")
+public class CategoryResource {
 
 	@Autowired
-	private UserService userService;
+	private CategoryService categoryService;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll() {
-		List<User> list = userService.findAll();
+	public ResponseEntity<List<Category>> findAll() {
+		List<Category> list = categoryService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
-		User obj = userService.findById(id);
+	public ResponseEntity<Category> findById(@PathVariable Long id) {
+		Category obj = categoryService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.saveUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+		Category savedCategory = categoryService.saveCategory(category);
+        return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-	    User updatedUser = userService.updateUser(id, userDetails);
-	    return ResponseEntity.ok(updatedUser);
+	public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
+		Category updatedCategory = categoryService.updateCategory(id, categoryDetails);
+	    return ResponseEntity.ok(updatedCategory);
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
+		categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
 

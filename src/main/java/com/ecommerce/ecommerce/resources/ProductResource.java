@@ -14,45 +14,44 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ecommerce.ecommerce.entities.User;
-import com.ecommerce.ecommerce.services.UserService;
+import com.ecommerce.ecommerce.entities.Product;
+import com.ecommerce.ecommerce.services.ProductService;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/products")
+public class ProductResource {
 
 	@Autowired
-	private UserService userService;
+	private ProductService productService;
 	
 	@GetMapping
-	public ResponseEntity<List<User>> findAll() {
-		List<User> list = userService.findAll();
+	public ResponseEntity<List<Product>> findAll() {
+		List<Product> list = productService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
-		User obj = userService.findById(id);
+	public ResponseEntity<Product> findById(@PathVariable Long id) {
+		Product obj = productService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.saveUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+		Product savedProduct = productService.saveProduct(product);
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-	    User updatedUser = userService.updateUser(id, userDetails);
-	    return ResponseEntity.ok(updatedUser);
+	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+		Product updatedProduct = productService.updateProduct(id, productDetails);
+	    return ResponseEntity.ok(updatedProduct);
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+		productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
-
-
+	
 }
