@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.ecommerce.ecommerce.resources.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class CategoryService {
 	}
 	
 	public Category findById(Long id) {
-		Optional<Category> obj = categoryRepository.findById(id);
-		return obj.get();
+		return categoryRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
 	}
 	
 	public Category saveCategory(Category category) {
@@ -31,7 +32,7 @@ public class CategoryService {
 	public Category updateCategory(Long id, Category categoryDetails) {
 
 		Category existingCategory = categoryRepository.findById(id)
-	            .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
+	            .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
 	    
 	    if (categoryDetails.getName() != null) {
 	    	existingCategory.setName(categoryDetails.getName());
@@ -41,7 +42,11 @@ public class CategoryService {
 	}
 
 
-	public void deleteCategory(Long id) {
+	public void deleteCategory(Long id)
+	{
+		Category existingCategory = categoryRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+
 		categoryRepository.deleteById(id);
 	}
 

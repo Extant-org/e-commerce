@@ -1,20 +1,17 @@
 package com.ecommerce.ecommerce.resources;
 
+import java.net.URI;
 import java.util.List;
 
+import com.ecommerce.ecommerce.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ecommerce.ecommerce.entities.Order;
 import com.ecommerce.ecommerce.services.OrderService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/orders")
@@ -37,9 +34,20 @@ public class OrderResource {
 	
 	@PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order savedProduct = orderService.saveOrder(order);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        Order savedOrder = orderService.saveOrder(order);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(savedOrder.getId())
+				.toUri();
+
+		return ResponseEntity.created(location).body(savedOrder);
     }
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
+		Order updatedOrder = orderService.updateOrder(id, orderDetails);
+		return ResponseEntity.ok(updatedOrder);
+	}
 	
 	@DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {

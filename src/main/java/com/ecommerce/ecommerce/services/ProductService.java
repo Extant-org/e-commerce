@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.ecommerce.ecommerce.resources.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class ProductService {
 	}
 	
 	public Product findById(Long id) {
-		Optional<Product> obj = productRepository.findById(id);
-		return obj.get();
+		return productRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 	}
 	
 	public Product saveProduct(Product product) {
@@ -31,7 +32,7 @@ public class ProductService {
 	public Product updateProduct(Long id, Product ProductDetails) {
 
 		Product existingProduct = productRepository.findById(id)
-	            .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+	            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 	    
 	    if (ProductDetails.getName() != null) {
 	    	existingProduct.setName(ProductDetails.getName());
@@ -50,6 +51,8 @@ public class ProductService {
 	}
 	
 	public void deleteProduct(Long id) {
+		Product existingProduct = productRepository.findById(id)
+						.orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 		productRepository.deleteById(id);
 	}
 }

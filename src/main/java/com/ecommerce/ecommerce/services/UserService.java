@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.ecommerce.ecommerce.resources.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class UserService {
 	}
 	
 	public User findById(Long id) {
-		Optional<User> obj = userRepository.findById(id);
-		return obj.get();
+		return userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 	}
 	
 	public User saveUser(User user) {
@@ -31,7 +32,7 @@ public class UserService {
 	public User updateUser(Long id, User userDetails) {
 
 	    User existingUser = userRepository.findById(id)
-	            .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 	    
 	    if (userDetails.getName() != null) {
 	        existingUser.setName(userDetails.getName());
@@ -52,7 +53,10 @@ public class UserService {
 
 
 	public void deleteUser(Long id) {
-	        userRepository.deleteById(id);
+	    User existingUser = userRepository.findById(id)
+						.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+		userRepository.deleteById(id);
 	}
 
 }

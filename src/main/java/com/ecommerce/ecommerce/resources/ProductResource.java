@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.ecommerce.entities.Product;
 import com.ecommerce.ecommerce.services.ProductService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -39,7 +41,12 @@ public class ProductResource {
 	@PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
 		Product savedProduct = productService.saveProduct(product);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(savedProduct.getId())
+				.toUri();
+
+		return ResponseEntity.created(location).body(savedProduct);
     }
 	
 	@PutMapping("/{id}")

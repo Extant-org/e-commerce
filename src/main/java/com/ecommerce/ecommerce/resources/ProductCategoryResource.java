@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ecommerce.ecommerce.dto.ProductCategoryDTO;
 import com.ecommerce.ecommerce.entities.Product;
 import com.ecommerce.ecommerce.services.ProductCategoryService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/products/{id}/categories")
@@ -26,7 +29,10 @@ public class ProductCategoryResource {
             @PathVariable Long id,
             @RequestBody ProductCategoryDTO productCategoriesDTO) {
         Product updatedProduct = productCategoryService.addCategories(id, productCategoriesDTO.getCategoryIds());
-        return ResponseEntity.ok(updatedProduct);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .build()
+                .toUri();
+        return ResponseEntity.created(location).body(updatedProduct);
     }
 
     @PutMapping

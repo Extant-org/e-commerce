@@ -1,5 +1,6 @@
 package com.ecommerce.ecommerce.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.ecommerce.entities.Category;
 import com.ecommerce.ecommerce.services.CategoryService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -39,7 +41,12 @@ public class CategoryResource {
 	@PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
 		Category savedCategory = categoryService.saveCategory(category);
-        return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(savedCategory.getId())
+				.toUri();
+
+		return ResponseEntity.created(location).body(savedCategory);
     }
 	
 	@PutMapping("/{id}")
