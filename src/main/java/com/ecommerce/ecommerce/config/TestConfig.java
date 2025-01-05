@@ -43,8 +43,8 @@ public class TestConfig implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		User u1 = new User(null, "teste", "teste@gmail.com", "123456879", "123456");
-		User u2 = new User(null, "teste2", "teste2@gmail.com", "987654321", "654321");
+		User u1 = new User(null, "teste", "teste@gmail.com", "123456879", "123456", "3213213");
+		User u2 = new User(null, "teste2", "teste2@gmail.com", "987654321", "654321", "112313");
 		
 		Order o1 = new Order(null, Instant.parse("2025-12-27T10:54:00Z"), OrderStatus.SHIPPED, u1);
 		Order o2 = new Order(null, Instant.parse("2025-12-28T10:55:01Z"), OrderStatus.WAITING_PAYMENT, u2);

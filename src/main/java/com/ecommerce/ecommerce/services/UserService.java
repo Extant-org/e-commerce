@@ -1,10 +1,10 @@
 package com.ecommerce.ecommerce.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.ecommerce.ecommerce.resources.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.ecommerce.entities.User;
@@ -15,6 +15,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	public List<User> findAll() {
 		return userRepository.findAll();
@@ -26,7 +29,9 @@ public class UserService {
 	}
 	
 	public User saveUser(User user) {
-	        return userRepository.save(user);
+		String encodedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodedPassword);
+		return userRepository.save(user);
 	}
 	
 	public User updateUser(Long id, User userDetails) {

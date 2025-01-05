@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.ecommerce.ecommerce.Util.AESUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.crypto.SecretKey;
 
 @Entity
 @Table(name = "tb_user")
@@ -28,21 +27,33 @@ public class User implements Serializable{
 	private String email;
 	private String phone;
 	private String password;
+	private String CPF;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
-	
-	public User () {
+
+	private static final SecretKey key;
+
+    static {
+        try {
+            key = AESUtil.getSecretKey();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User () {
 		
 	}
 
-	public User(Long id, String name, String email, String phone, String password) {
+	public User(Long id, String name, String email, String phone, String password, String CPF) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
 		this.password = password;
+		this.CPF = CPF;
 	}
 
 	public Long getId() {
@@ -69,13 +80,24 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
+
+	@Transient
 	public String getPhone() {
-		return phone;
+		try {
+			return AESUtil.decrypt(this.phone, key);
+		} catch (Exception e) {
+			throw new RuntimeException("Error decrypting phone", e);
+		}
 	}
 
 	public void setPhone(String phone) {
-		this.phone = phone;
+		try {
+			this.phone = AESUtil.encrypt(phone, key);
+		} catch (Exception e) {
+			throw new RuntimeException("Error encrypting phone", e);
+		}
 	}
+
 
 	public String getPassword() {
 		return password;
@@ -84,7 +106,24 @@ public class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	@Transient
+	public String getCPF() {
+		try {
+			return AESUtil.decrypt(this.CPF, key);
+		} catch (Exception e) {
+			throw new RuntimeException("Error decrypting CPF", e);
+		}
+	}
+
+	public void setCPF(String CPF) {
+		try {
+			this.CPF = AESUtil.encrypt(CPF, key);
+		} catch (Exception e) {
+			throw new RuntimeException("Error encrypting CPF", e);
+		}
+	}
+
 	public List<Order> getOrders() {
 		return orders;
 	}
