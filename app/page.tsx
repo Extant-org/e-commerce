@@ -3,7 +3,7 @@ import { ProductCard } from "@/app/Components/ProductCard";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col gap-2 dark:bg-gray-800">
+    <main className="flex min-h-screen flex-col gap-2 dark:bg-gray-800 mb-24">
       <Carousel className="mt-24">
         <img
           src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
@@ -27,7 +27,7 @@ export default function Home() {
         />
       </Carousel>
       <div className="container-sm container mx-auto">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-4 gap-3">
           <ProductCard />
           <ProductCard />
           <ProductCard />
