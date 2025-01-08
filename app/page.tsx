@@ -1,5 +1,5 @@
-import { Carousel } from "flowbite-react";
-import { ProductCard } from "@/app/Components/ProductCard";
+import { Carousel } from "flowbite-react"
+import { ProductCard } from "@/app/Components/ProductCard"
 
 export default function Home() {
   return (
@@ -43,5 +43,5 @@ export default function Home() {
         </div>
       </div>
     </main>
-  );
+  )
 }

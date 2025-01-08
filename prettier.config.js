@@ -4,4 +4,4 @@ module.exports = {
   // tailwindcss
   tailwindAttributes: ["theme"],
   tailwindFunctions: ["twMerge", "createTheme"],
-};
+}

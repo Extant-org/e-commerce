@@ -1,4 +1,4 @@
-import { Card } from "flowbite-react";
+import { Card } from "flowbite-react"
 
 export function ProductCard() {
   return (
@@ -69,5 +69,5 @@ export function ProductCard() {
         </a>
       </div>
     </Card>
-  );
+  )
 }
