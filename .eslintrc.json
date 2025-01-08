@@ -2,12 +2,23 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:tailwindcss/recommended",
-    "prettier"
+    "prettier",
+    "plugin:tailwindcss/recommended",
   ],
   "settings": {
     "tailwindcss": {
       "callees": ["twMerge", "createTheme"],
       "classRegex": "^(class(Name)|theme)?$"
     }
-  }
+  },
+  "rules": {
+    "no-console": ["error", { "allow": ["info", "warn", "error"] }],
+    "tailwindcss/classnames-order": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js"],
+      "parser": "@typescript-eslint/parser"
+    }
+  ]
 }
