@@ -1,29 +1,29 @@
-# e-commerce
+# Guia de Configuração do Projeto  
+_Este guia fornece exemplos básicos de configuração. Sinta-se à vontade para adaptá-lo conforme necessário._  
 
-This template should help get you started developing with Vue 3 in Vite.
+## Requisitos de Instalação  
 
-## Recommended IDE Setup
+Certifique-se de que os seguintes softwares estejam instalados em sua máquina antes de começar:  
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+1. **Java**  
+   - Versão mínima recomendada: **11**  
+   - [Instruções para download e instalação do Java](https://www.oracle.com/java/technologies/javase-downloads.html)  
 
-## Customize configuration
+2. **PostgreSQL**  
+   - Banco de dados relacional necessário para este projeto.  
+   - [Instruções para download e instalação do PostgreSQL](https://www.postgresql.org/download/)  
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+3. **Dependências adicionais (opcional)**  
+   - Caso o projeto necessite de outros softwares, como Node.js, Docker, etc., liste-os aqui com links para suas documentações oficiais.  
 
-## Project Setup
+---
 
-```sh
-npm install
-```
+## Como Configurar e Rodar o Projeto  
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+1. Clone este repositório em sua máquina local:  
+   ```bash
+   git clone https://github.com/usuario/repo.git
+   cd repo
+   
+# Exemplo para projetos Spring Boot  
+mvn spring-boot:run  
