@@ -1,41 +1,43 @@
-import { Carousel } from "flowbite-react"
-import { ProductCard } from "@/app/Components/ProductCard"
+"use client";
+
+import { useState } from "react";
+import Search from "./ui/search";
+import { ProductCard } from "@/app/Components/ProductCard";
+
+// Dados de produtos
+const products = [
+  {
+    id: 1,
+    name: "Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport",
+    image: "https://flowbite-react.com/images/products/apple-watch.png",
+    rating: 5.0,
+    price: 599,
+  },
+];
 
 export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filtro de produtos com base na pesquisa
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <main className="flex min-h-screen flex-col gap-2 dark:bg-gray-800 mb-24">
-      <Carousel className="mt-24">
-        <img
-          src="https://flowbite.com/docs/images/carousel/carousel-1.svg"
-          alt="..."
-        />
-        <img
-          src="https://flowbite.com/docs/images/carousel/carousel-2.svg"
-          alt="..."
-        />
-        <img
-          src="https://flowbite.com/docs/images/carousel/carousel-3.svg"
-          alt="..."
-        />
-        <img
-          src="https://flowbite.com/docs/images/carousel/carousel-4.svg"
-          alt="..."
-        />
-        <img
-          src="https://flowbite.com/docs/images/carousel/carousel-5.svg"
-          alt="..."
-        />
-      </Carousel>
-      <div className="container-sm container mx-auto">
-        <div className="grid grid-cols-4 gap-3">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+    <main className="mb-24 flex min-h-screen flex-col gap-2 dark:bg-gray-800">
+      <div className="container mx-auto">
+        {/* Componente de busca */}
+        <Search placeholder="Search products..." onSearch={setSearchQuery} />
+
+        {/* Lista de produtos */}
+        <div className="mt-3 grid grid-cols-4 gap-3">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
-        <div className="grid grid-cols-12 gap-2 mt-24">
+
+        {/* Categorias */}
+        <div className="mt-24 grid grid-cols-12 gap-2">
           <div className="col-span-8 bg-gray-100 p-5">Categoria 1</div>
           <div className="col-span-4 bg-gray-100 p-5">Categoria 2</div>
           <div className="col-span-3 bg-gray-100 p-5">Categoria 3</div>
@@ -43,5 +45,5 @@ export default function Home() {
         </div>
       </div>
     </main>
-  )
+  );
 }
