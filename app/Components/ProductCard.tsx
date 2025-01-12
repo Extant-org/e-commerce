@@ -11,7 +11,7 @@ interface ProductCardProps {
   };
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card
       className="max-w-sm"

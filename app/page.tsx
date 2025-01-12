@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Search from "./ui/search";
-import { ProductCard } from "@/app/Components/ProductCard";
+import ProductCard from "@/app/Components/ProductCard";
+import Categories from "@/app/Components/Categories";
 
 // Dados de produtos
 const products = [
@@ -12,6 +13,39 @@ const products = [
     image: "https://flowbite-react.com/images/products/apple-watch.png",
     rating: 5.0,
     price: 599,
+    category_id: 1,
+  },
+  {
+    id: 2,
+    name: "Samsung Galaxy Watch 4",
+    image: "https://flowbite-react.com/images/products/apple-watch.png",
+    rating: 4.5,
+    price: 399,
+    category_id: 1,
+  },
+  {
+    id: 3,
+    name: "Fitbit Charge 5",
+    image: "https://flowbite-react.com/images/products/apple-watch.png",
+    rating: 4.0,
+    price: 179,
+    category_id: 1,
+  },
+  {
+    id: 4,
+    name: "Garmin Forerunner 945",
+    image: "https://flowbite-react.com/images/products/apple-watch.png",
+    rating: 4.8,
+    price: 499,
+    category_id: 1,
+  },
+  {
+    id: 5,
+    name: "Fossil Gen 5",
+    image: "https://flowbite-react.com/images/products/apple-watch.png",
+    rating: 4.2,
+    price: 295,
+    category_id: 1,
   },
 ];
 
@@ -37,12 +71,7 @@ export default function Home() {
         </div>
 
         {/* Categorias */}
-        <div className="mt-24 grid grid-cols-12 gap-2">
-          <div className="col-span-8 bg-gray-100 p-5">Categoria 1</div>
-          <div className="col-span-4 bg-gray-100 p-5">Categoria 2</div>
-          <div className="col-span-3 bg-gray-100 p-5">Categoria 3</div>
-          <div className="col-span-9 bg-gray-100 p-5">Categoria 4</div>
-        </div>
+        <Categories />
       </div>
     </main>
   );
