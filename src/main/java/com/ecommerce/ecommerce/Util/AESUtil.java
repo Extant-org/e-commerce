@@ -4,13 +4,21 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.util.Base64;
 
 public class AESUtil {
 
     private static final String ALGORITHM = "AES";
+    private static final SecretKey key;
+
+    static {
+        try {
+            key = generateKey();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize AES key", e);
+        }
+    }
 
     private static byte[] generateIV() {
         byte[] iv = new byte[16];
@@ -28,7 +36,7 @@ public class AESUtil {
         return keyGen.generateKey(); // Manter assim até ser necessário o uso de um Key Management Systems (KMS).
     }
 
-    public static String encrypt (String plaintext, SecretKey key) throws Exception {
+    public static String encrypt(String plaintext) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         byte[] iv = generateIV();
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
@@ -37,7 +45,7 @@ public class AESUtil {
         return Base64.getEncoder().encodeToString(encryptedBytes) + ";" + Base64.getEncoder().encodeToString(iv);
     }
 
-    public static String decrypt(String ciphertext, SecretKey key) throws Exception {
+    public static String decrypt(String ciphertext) throws Exception {
         String[] parts = ciphertext.split(";");
         byte[] encryptedBytes = Base64.getDecoder().decode(parts[0]);
         byte[] iv = Base64.getDecoder().decode(parts[1]);

@@ -3,8 +3,8 @@ package com.ecommerce.ecommerce.resources;
 import java.net.URI;
 import java.util.List;
 
+import com.ecommerce.ecommerce.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,8 +39,8 @@ public class UserResource {
 	}
 	
 	@PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.saveUser(user);
+    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
+        User savedUser = userService.saveUser(userDTO);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(savedUser.getId())
@@ -50,8 +50,8 @@ public class UserResource {
     }
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-	    User updatedUser = userService.updateUser(id, userDetails);
+	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+	    User updatedUser = userService.updateUser(id, userDTO);
 	    return ResponseEntity.ok(updatedUser);
 	}
 	

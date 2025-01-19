@@ -33,16 +33,6 @@ public class User implements Serializable{
 	@OneToMany(mappedBy = "client")
 	private List<Order> orders = new ArrayList<>();
 
-	private static final SecretKey key;
-
-    static {
-        try {
-            key = AESUtil.getSecretKey();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public User () {
 		
 	}
@@ -84,15 +74,19 @@ public class User implements Serializable{
 	@Transient
 	public String getPhone() {
 		try {
-			return AESUtil.decrypt(this.phone, key);
+			if (this.phone == null) {
+				return null;
+			}
+			return AESUtil.decrypt(this.phone);
 		} catch (Exception e) {
-			throw new RuntimeException("Error decrypting phone", e);
+			System.err.println("Error decrypting phone: " + e.getMessage());
+			return null;
 		}
 	}
 
 	public void setPhone(String phone) {
 		try {
-			this.phone = AESUtil.encrypt(phone, key);
+			this.phone = AESUtil.encrypt(phone);
 		} catch (Exception e) {
 			throw new RuntimeException("Error encrypting phone", e);
 		}
@@ -110,7 +104,7 @@ public class User implements Serializable{
 	@Transient
 	public String getCPF() {
 		try {
-			return AESUtil.decrypt(this.CPF, key);
+			return AESUtil.decrypt(this.CPF);
 		} catch (Exception e) {
 			throw new RuntimeException("Error decrypting CPF", e);
 		}
@@ -118,7 +112,7 @@ public class User implements Serializable{
 
 	public void setCPF(String CPF) {
 		try {
-			this.CPF = AESUtil.encrypt(CPF, key);
+			this.CPF = AESUtil.encrypt(CPF);
 		} catch (Exception e) {
 			throw new RuntimeException("Error encrypting CPF", e);
 		}

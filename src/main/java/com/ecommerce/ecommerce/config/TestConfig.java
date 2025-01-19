@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.config;
 import java.time.Instant;
 import java.util.Arrays;
 
+import com.ecommerce.ecommerce.Util.AESUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,9 @@ import com.ecommerce.ecommerce.repositories.OrderItemRepository;
 import com.ecommerce.ecommerce.repositories.OrderRepository;
 import com.ecommerce.ecommerce.repositories.ProductRepository;
 import com.ecommerce.ecommerce.repositories.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.crypto.SecretKey;
 
 @Configuration
 @Profile("test")
@@ -39,13 +43,24 @@ public class TestConfig implements CommandLineRunner{
 	
 	@Autowired
 	private OrderItemRepository orderItemRepository;
-	
+
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+
 	@Override
 	public void run(String... args) throws Exception {
-		
-		User u1 = new User(null, "teste", "teste@gmail.com", "123456879", "123456", "3213213");
-		User u2 = new User(null, "teste2", "teste2@gmail.com", "987654321", "654321", "112313");
-		
+
+		String encryptedPhone1 = AESUtil.encrypt("123456879");
+		String encryptedCPF1 = AESUtil.encrypt("3213213");
+		String encryptedPassword1 = passwordEncoder.encode("123456");
+
+		String encryptedPhone2 = AESUtil.encrypt("987654321");
+		String encryptedCPF2 = AESUtil.encrypt("112313");
+		String encryptedPassword2 = passwordEncoder.encode("654321");
+
+		User u1 = new User(null, "teste", "teste@gmail.com", encryptedPhone1, encryptedPassword1, encryptedCPF1);
+		User u2 = new User(null, "teste2", "teste2@gmail.com", encryptedPhone2, encryptedPassword2, encryptedCPF2);
+
 		Order o1 = new Order(null, Instant.parse("2025-12-27T10:54:00Z"), OrderStatus.SHIPPED, u1);
 		Order o2 = new Order(null, Instant.parse("2025-12-28T10:55:01Z"), OrderStatus.WAITING_PAYMENT, u2);
 		Order o3 = new Order(null, Instant.parse("2025-12-29T10:56:02Z"), OrderStatus.CANCELED, u1);

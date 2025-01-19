@@ -2,6 +2,7 @@ package com.ecommerce.ecommerce.services;
 
 import java.util.List;
 
+import com.ecommerce.ecommerce.dto.UserDTO;
 import com.ecommerce.ecommerce.resources.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,29 +29,39 @@ public class UserService {
 				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 	}
 	
-	public User saveUser(User user) {
-		String encodedPassword = passwordEncoder.encode(user.getPassword());
+	public User saveUser(UserDTO userDTO) {
+		User user = new User();
+		String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+		user.setName(userDTO.getName());
+		user.setEmail(userDTO.getEmail());
+		user.setPhone(userDTO.getPhone());
+		user.setCPF(userDTO.getCPF());
 		user.setPassword(encodedPassword);
+
 		return userRepository.save(user);
 	}
 	
-	public User updateUser(Long id, User userDetails) {
+	public User updateUser(Long id, UserDTO userDTO) {
 
 	    User existingUser = userRepository.findById(id)
 	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-	    
-	    if (userDetails.getName() != null) {
-	        existingUser.setName(userDetails.getName());
+
+		if (userDTO.getName() != null) {
+	        existingUser.setName(userDTO.getName());
 	    }
-	    if (userDetails.getEmail() != null) {
-	        existingUser.setEmail(userDetails.getEmail());
+	    if (userDTO.getEmail() != null) {
+	        existingUser.setEmail(userDTO.getEmail());
 	    }
-	    if (userDetails.getPhone() != null) {
-	        existingUser.setPhone(userDetails.getPhone());
+	    if (userDTO.getPhone() != null) {
+	        existingUser.setPhone(userDTO.getPhone());
 	    }
-	    if (userDetails.getPassword() != null) {
-	        existingUser.setPassword(userDetails.getPassword());
-	    }
+		if (userDTO.getPassword() != null) {
+			String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+			existingUser.setPassword(encryptedPassword);
+		}
+		if (userDTO.getCPF() != null) {
+			existingUser.setCPF(userDTO.getCPF());
+		}
 	    
 
 	    return userRepository.save(existingUser);
