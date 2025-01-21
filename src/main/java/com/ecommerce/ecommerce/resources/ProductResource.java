@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.resources;
 import java.net.URI;
 import java.util.List;
 
+import com.ecommerce.ecommerce.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,8 @@ public class ProductResource {
 	}
 	
 	@PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-		Product savedProduct = productService.saveProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDTO productDTO) {
+		Product savedProduct = productService.saveProduct(productDTO);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(savedProduct.getId())
@@ -50,8 +51,8 @@ public class ProductResource {
     }
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-		Product updatedProduct = productService.updateProduct(id, productDetails);
+	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+		Product updatedProduct = productService.updateProduct(id, productDTO);
 	    return ResponseEntity.ok(updatedProduct);
 	}
 	

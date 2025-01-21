@@ -3,6 +3,7 @@ package com.ecommerce.ecommerce.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.ecommerce.ecommerce.dto.ProductDTO;
 import com.ecommerce.ecommerce.resources.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,26 +26,32 @@ public class ProductService {
 				.orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 	}
 	
-	public Product saveProduct(Product product) {
+	public Product saveProduct(ProductDTO productDTO) {
+		Product product = new Product();
+		product.setName(productDTO.getName());
+		product.setDescription(productDTO.getDescription());
+		product.setPrice(productDTO.getPrice());
+		product.setImgUrl(productDTO.getImgUrl());
+
 		return productRepository.save(product);
 	}
 	
-	public Product updateProduct(Long id, Product ProductDetails) {
+	public Product updateProduct(Long id, ProductDTO productDTO) {
 
 		Product existingProduct = productRepository.findById(id)
 	            .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 	    
-	    if (ProductDetails.getName() != null) {
-	    	existingProduct.setName(ProductDetails.getName());
+	    if (productDTO.getName() != null) {
+	    	existingProduct.setName(productDTO.getName());
 	    }
-	    if (ProductDetails.getDescription() != null) {
-	    	existingProduct.setDescription(ProductDetails.getDescription());
+	    if (productDTO.getDescription() != null) {
+	    	existingProduct.setDescription(productDTO.getDescription());
 	    }
-	    if (ProductDetails.getPrice() != null) {
-	    	existingProduct.setPrice(ProductDetails.getPrice());
+	    if (productDTO.getPrice() != null) {
+	    	existingProduct.setPrice(productDTO.getPrice());
 	    }
-	    if (ProductDetails.getImgUrl() != null) {
-	    	existingProduct.setImgUrl(ProductDetails.getImgUrl());
+	    if (productDTO.getImgUrl() != null) {
+	    	existingProduct.setImgUrl(productDTO.getImgUrl());
 	    }
 	    
 	    return productRepository.save(existingProduct);

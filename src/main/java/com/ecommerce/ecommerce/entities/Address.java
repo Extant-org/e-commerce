@@ -1,10 +1,13 @@
 package com.ecommerce.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_addresses")
@@ -20,6 +23,10 @@ public class Address implements Serializable {
     private String complement;
     private String city;
     private String state;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "addresses")
+    private Set<User> users = new HashSet<>();
 
     public Address () {
 
